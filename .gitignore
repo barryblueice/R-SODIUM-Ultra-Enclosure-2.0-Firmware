@@ -1,0 +1,6 @@
+/.vscode
+/.devcontainer
+/build
+/managed_components
+*.lock
+*.uf2
