@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "lvgl_ui/lvgl_init.h"
+#include "i2c_1/lvgl_ui/lvgl_init.h"
 #include "esp_log.h"
 #include <math.h>
 #include "freertos/FreeRTOS.h"

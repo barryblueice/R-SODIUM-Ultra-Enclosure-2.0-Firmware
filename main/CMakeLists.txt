@@ -4,8 +4,8 @@ idf_component_register(
         "main.c"
         "res/logo.c"
         "res/fonts.c"
-        "lvgl_ui/lvgl_init.c"
-        "lvgl_ui/display.c"
+        "i2c_1/lvgl_ui/lvgl_init.c"
+        "i2c_1/lvgl_ui/display.c"
         "ws2812/ws2812.c"
     INCLUDE_DIRS "."
     PRIV_REQUIRES esp_driver_gpio 
