@@ -17,7 +17,8 @@ void app_main(void)
 {
     ESP_LOGI(TAG, "Initializing R-SODIUM Ultra Enclosure 2.0 Controller");
     ESP_ERROR_CHECK(i2c_master_init());
-    sensor_queue = xQueueCreate(10, sizeof(sensor_data_t));
+    sensor_queue = xQueueCreate(8, sizeof(sensor_text_t));
+    assert(sensor_queue != NULL); 
     lv_init();
     lv_display_t *display = lv_display_create(LCD_H_RES, LCD_V_RES);
     xTaskCreate(show_ui, "LVGL_UI", 12*1024, display, 2, NULL);

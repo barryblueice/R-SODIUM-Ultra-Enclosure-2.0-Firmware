@@ -34,8 +34,11 @@ void tmp117_thread(void *arg) {
         TMP117_read_temp(tmp117_front, &temp_front);
         TMP117_read_temp(tmp117_back, &temp_back);
 
+        sensor_text_t msg;
         char temp_show[32];
+        msg.index = 0;
         snprintf(temp_show, sizeof(temp_show), "F: %.3f°C; B: %.3f°C", temp_front, temp_back);
+        xQueueSend(sensor_queue, &msg, 0);
 
         ESP_LOGI(TAG, "%s", temp_show);
 

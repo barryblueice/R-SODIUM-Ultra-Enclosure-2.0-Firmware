@@ -11,7 +11,16 @@ LV_IMG_DECLARE(logo);
 
 lv_obj_t *labels[4];
 
-void _main_gui(lv_display_t *disp) {
+void update_labels_task(lv_timer_t *timer)
+{
+    sensor_text_t msg;
+    if (xQueueReceive(sensor_queue, &msg, 0) == pdTRUE) {
+        lv_label_set_text(labels[msg.index], msg.text);
+    }
+}
+
+void _main_gui(lv_display_t *disp)
+{
     lv_coord_t w = lv_display_get_horizontal_resolution(disp);
     lv_coord_t h = lv_display_get_vertical_resolution(disp);
 
@@ -23,12 +32,7 @@ void _main_gui(lv_display_t *disp) {
     lv_obj_set_style_pad_all(cont, 0, 0);
     lv_obj_set_style_pad_row(cont, 0, 0);
 
-    const char *texts[] = {
-        "",
-        "",
-        "",
-        "",
-    };
+    const char *texts[] = {"", "", "", ""};
     for (int i = 0; i < 4; i++) {
         labels[i] = lv_label_create(cont);
         lv_label_set_long_mode(labels[i], LV_LABEL_LONG_SCROLL_CIRCULAR);
@@ -37,6 +41,8 @@ void _main_gui(lv_display_t *disp) {
         lv_obj_set_style_text_font(labels[i], &fonts, 0);
         lv_obj_set_style_text_line_space(labels[i], 0, 0);
     }
+
+    lv_timer_create(update_labels_task, 100, NULL);
 }
 
 void _startup_logo(lv_display_t *disp) {

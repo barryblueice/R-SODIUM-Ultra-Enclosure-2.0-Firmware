@@ -8,11 +8,9 @@
 #include <stdio.h>
 
 typedef struct {
-    float line0;
-    float line1;
-    float line2;
-    float line3;
-} sensor_data_t;
+    int index;
+    char text[64];
+} sensor_text_t;
 
 extern QueueHandle_t sensor_queue;
 
