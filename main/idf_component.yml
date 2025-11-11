@@ -5,3 +5,4 @@ dependencies:
   espressif/led_strip: ^3.0.1~1
   espressif/ssd1306: ^1.0.5~1
   lvgl/lvgl: ^9.4.0
+  espressif/esp_lvgl_port: ^2.6.2

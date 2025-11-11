@@ -1879,6 +1879,11 @@ CONFIG_WL_SECTOR_SIZE=4096
 # end of Wear Levelling
 
 #
+# ESP LVGL PORT
+#
+# end of ESP LVGL PORT
+
+#
 # TinyUSB Stack
 #
 CONFIG_TINYUSB_DEBUG_LEVEL=1
