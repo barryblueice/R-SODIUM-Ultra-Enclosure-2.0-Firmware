@@ -13,7 +13,8 @@
 #include "driver/i2c_master.h"
 #include "lvgl.h"
 
-# include "lvgl_init.h"
+#include "lvgl_init.h"
+#include "init_func/init_func.h"
 
 static const char *TAG = "LVGL_INIT";
 
@@ -75,3 +76,5 @@ void lvgl_port_task(void *arg) {
         usleep(1000 * time_till_next_ms);
     }
 }
+
+

@@ -13,6 +13,8 @@
 #include "lvgl.h"
 #include "esp_lcd_panel_vendor.h"
 
+#include "init_func/init_func.h"
+
 static const char *TAG = "LVGL_DISPLAY";
 
 extern void _startup_logo(lv_disp_t *disp);
@@ -22,35 +24,23 @@ void show_ui(void *arg) {
 
     lv_display_t *display = (lv_display_t *)arg;
 
-    ESP_LOGI(TAG, "Initialize I2C bus");
-    i2c_master_bus_handle_t i2c_bus = NULL;
-    i2c_master_bus_config_t bus_config = {
-        .clk_source = I2C_CLK_SRC_DEFAULT,
-        .glitch_ignore_cnt = 7,
-        .i2c_port = I2C_BUS_PORT,
-        .sda_io_num = PIN_NUM_SDA,
-        .scl_io_num = PIN_NUM_SCL,
-        .flags.enable_internal_pullup = false,
-    };
-    ESP_ERROR_CHECK(i2c_new_master_bus(&bus_config, &i2c_bus));
-
     ESP_LOGI(TAG, "Install panel IO");
     esp_lcd_panel_io_handle_t io_handle = NULL;
     esp_lcd_panel_io_i2c_config_t io_config = {
-        .dev_addr = I2C_HW_ADDR,
+        .dev_addr = 0x3D,
         .scl_speed_hz = LCD_PIXEL_CLOCK_HZ,
         .control_phase_bytes = 1,
         .lcd_cmd_bits = LCD_CMD_BITS,
         .lcd_param_bits = LCD_CMD_BITS,
         .dc_bit_offset = 6
     };
-    ESP_ERROR_CHECK(esp_lcd_new_panel_io_i2c(i2c_bus, &io_config, &io_handle));
+    ESP_ERROR_CHECK(esp_lcd_new_panel_io_i2c(I2C_BUS1, &io_config, &io_handle));
 
     ESP_LOGI(TAG, "Install SSD1306/1315 panel driver");
     esp_lcd_panel_handle_t panel_handle = NULL;
     esp_lcd_panel_dev_config_t panel_config = {
         .bits_per_pixel = 1,
-        .reset_gpio_num = PIN_NUM_RST,
+        .reset_gpio_num = -1,
     };
     esp_lcd_panel_ssd1306_config_t ssd1306_config = {
         .height = LCD_V_RES,

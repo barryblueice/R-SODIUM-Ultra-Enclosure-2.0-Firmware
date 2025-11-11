@@ -1,14 +1,17 @@
 #include "lvgl.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "freertos/queue.h"
 
 #include "lvgl_init.h"
+#include "init_func/init_func.h"
 
 LV_FONT_DECLARE(fonts);
 LV_IMG_DECLARE(logo);
 
 lv_obj_t *labels[4];
 
-void _main_gui(lv_display_t *disp)
-{
+void _main_gui(lv_display_t *disp) {
     lv_coord_t w = lv_display_get_horizontal_resolution(disp);
     lv_coord_t h = lv_display_get_vertical_resolution(disp);
 
@@ -21,23 +24,22 @@ void _main_gui(lv_display_t *disp)
     lv_obj_set_style_pad_row(cont, 0, 0);
 
     const char *texts[] = {
-        "行1：这是测试文字1aaaaaaaaaaaaaaa",
-        "行2：这是测试文字2bbbbbbbbbbbbbbb",
-        "行3：这是测试文字3ccccccccccccccc",
-        "行4：这是测试文字4ddddddddddddddd",
+        "",
+        "",
+        "",
+        "",
     };
     for (int i = 0; i < 4; i++) {
-        lv_obj_t *label = lv_label_create(cont);
-        lv_label_set_long_mode(label, LV_LABEL_LONG_SCROLL_CIRCULAR);
-        lv_obj_set_width(label, w - 2);
-        lv_label_set_text(label, texts[i]);
-        lv_obj_set_style_text_font(label, &fonts, 0);
-        lv_obj_set_style_text_line_space(label, 0, 0);
+        labels[i] = lv_label_create(cont);
+        lv_label_set_long_mode(labels[i], LV_LABEL_LONG_SCROLL_CIRCULAR);
+        lv_obj_set_width(labels[i], w - 2);
+        lv_label_set_text(labels[i], texts[i]);
+        lv_obj_set_style_text_font(labels[i], &fonts, 0);
+        lv_obj_set_style_text_line_space(labels[i], 0, 0);
     }
 }
 
-void _startup_logo(lv_display_t *disp)
-{
+void _startup_logo(lv_display_t *disp) {
     lv_obj_t *img = lv_img_create(lv_scr_act());
     lv_img_set_src(img, &logo);
 
@@ -50,4 +52,10 @@ void _startup_logo(lv_display_t *disp)
 
     lv_image_set_scale(img, scale);
     lv_obj_center(img);
+}
+
+void update_ui(int index, const char *text) {
+    if (index < 0 || index >= 4) return;
+    lv_label_set_text(labels[index], text);
+    lv_obj_invalidate(labels[index]);
 }

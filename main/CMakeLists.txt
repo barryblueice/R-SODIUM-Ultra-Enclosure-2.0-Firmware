@@ -6,6 +6,12 @@ idf_component_register(
         "res/logo.c"
         "res/fonts.c"
 
+        # Initialization
+        "init_func/init_func.c"
+
+        # I2C 0 - TMP117 Temperature Sensors
+        "i2c_0/TMP117/TMP117.c"
+
         # I2C 1 - LVGL UI
         "i2c_1/lvgl_ui/lvgl_init.c"
         "i2c_1/lvgl_ui/display.c"
