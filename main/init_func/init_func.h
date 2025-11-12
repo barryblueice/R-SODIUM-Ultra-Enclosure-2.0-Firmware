@@ -4,15 +4,7 @@
 #include "driver/i2c_master.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "freertos/queue.h"
 #include <stdio.h>
-
-typedef struct {
-    int index;
-    char text[64];
-} sensor_text_t;
-
-extern QueueHandle_t sensor_queue;
 
 esp_err_t i2c_master_init(void);
 

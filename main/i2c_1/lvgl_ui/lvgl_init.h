@@ -25,7 +25,7 @@
 extern uint8_t oled_buffer[LCD_H_RES * LCD_V_RES / 8];
 extern _lock_t lvgl_api_lock;
 extern lv_obj_t *live_label;
-extern lv_obj_t *labels[4];
+extern lv_obj_t *labels[5];
 
 bool notify_lvgl_flush_ready(esp_lcd_panel_io_handle_t io_panel, esp_lcd_panel_io_event_data_t *edata, void *user_ctx);
 void lvgl_flush_cb(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map);
@@ -34,6 +34,6 @@ void show_ui(void *arg);
 void increase_lvgl_tick(void *arg);
 void lvgl_port_task(void *arg);
 void update_ui(int index, const char *text);
-void lvgl_update_task(void *arg);
+void update_label_text(int label_index, const char *new_text);
 
 #endif

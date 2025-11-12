@@ -29,20 +29,24 @@ static esp_err_t TMP117_read_temp(i2c_master_dev_handle_t dev, float *temp) {
 
 void tmp117_thread(void *arg) {
 
+    char buf[32];
+
     while (1) {
         float temp_front = 0, temp_back = 0;
         TMP117_read_temp(tmp117_front, &temp_front);
         TMP117_read_temp(tmp117_back, &temp_back);
 
-        sensor_text_t msg;
-        char temp_show[32];
-        msg.index = 0;
-        snprintf(temp_show, sizeof(temp_show), "F: %.3f°C; B: %.3f°C", temp_front, temp_back);
-        xQueueSend(sensor_queue, &msg, 0);
+        snprintf(buf, sizeof(buf), "F: %.3f°C", temp_front);
+        update_label_text(0, buf);
+        ESP_LOGI(TAG, "%s", buf);
 
-        ESP_LOGI(TAG, "%s", temp_show);
+        vTaskDelay(pdMS_TO_TICKS(2000));
 
-        vTaskDelay(pdMS_TO_TICKS(500));
+        snprintf(buf, sizeof(buf), "B: %.3f°C", temp_back);
+        update_label_text(0, buf);
+        ESP_LOGI(TAG, "%s", buf);
+
+        vTaskDelay(pdMS_TO_TICKS(2000));
 
     }
 }

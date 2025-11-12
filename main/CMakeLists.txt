@@ -4,7 +4,7 @@ idf_component_register(
 
         # Resources
         "res/logo.c"
-        "res/fonts.c"
+        "res/pixelmplus.c"
 
         # Initialization
         "init_func/init_func.c"

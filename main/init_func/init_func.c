@@ -21,7 +21,6 @@ i2c_master_bus_handle_t I2C_BUS0 = NULL;
 i2c_master_bus_handle_t I2C_BUS1 = NULL;
 i2c_master_dev_handle_t tmp117_front = NULL;
 i2c_master_dev_handle_t tmp117_back = NULL;
-QueueHandle_t sensor_queue = NULL;
 
 esp_err_t i2c_master_init(void) {
     i2c_master_bus_config_t bus_cfg = {
