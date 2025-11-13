@@ -16,6 +16,7 @@
 
 #define FAN_PWM_GPIO     33
 #define FAN_RPM_GPIO     34
+#define FAN_PWR_GPIO     35
 #define MCPWM_CLK_HZ     1000000UL
 #define FAN_PWM_FREQ_HZ  25000UL
 #define PERIOD_TICKS     (MCPWM_CLK_HZ / FAN_PWM_FREQ_HZ)
@@ -93,14 +94,27 @@ void fan_rpm_init(void) {
         .intr_type = GPIO_INTR_NEGEDGE,
         .mode = GPIO_MODE_INPUT,
         .pin_bit_mask = (1ULL << FAN_RPM_GPIO),
-        .pull_up_en = GPIO_PULLUP_ENABLE,
+        .pull_up_en = GPIO_PULLUP_DISABLE,
         .pull_down_en = GPIO_PULLDOWN_DISABLE,
     };
     gpio_config(&io_conf);
 
+    gpio_config_t pwr_conf = {
+        .intr_type = GPIO_INTR_DISABLE,
+        .mode = GPIO_MODE_OUTPUT,
+        .pin_bit_mask = (1ULL << FAN_PWR_GPIO),
+        .pull_up_en = GPIO_PULLUP_DISABLE,
+        .pull_down_en = GPIO_PULLDOWN_DISABLE,
+    };
+    gpio_config(&pwr_conf);
+
+    gpio_set_level(FAN_PWR_GPIO, 0);
+
     gpio_install_isr_service(0);
     gpio_isr_handler_add(FAN_RPM_GPIO, rpm_isr_handler, NULL);
 }
+
+
 
 void fan_rpm_task(void *arg) {
     char buf[32];
@@ -131,9 +145,11 @@ void fan_temp_task(void *arg) {
 
         if (avg < FAN_START_TEMP) {
             duty = 0.0f;
+            gpio_set_level(FAN_PWR_GPIO, 0);
         } else {
             duty = FAN_MIN_DUTY + (avg - FAN_START_TEMP) * (FAN_MAX_DUTY - FAN_MIN_DUTY) / (FAN_FULL_TEMP - FAN_START_TEMP);
             if (duty > FAN_MAX_DUTY) duty = FAN_MAX_DUTY;
+            gpio_set_level(FAN_PWR_GPIO, 1);
         }
 
         fan_set_speed(duty);
