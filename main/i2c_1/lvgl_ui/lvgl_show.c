@@ -19,7 +19,8 @@ QueueHandle_t label_update_queue;
 
 static int current_display_group = 0;
 
-const char *texts[10] = {
+const char *texts[TOTAL_LABELS] = {
+    "", "", "", "", "",
     "", "", "", "", "",
     "", "", "", "", ""
 };
@@ -41,7 +42,7 @@ void update_labels_task(lv_timer_t *timer) {
     label_update_msg_t msg;
     
     while (xQueueReceive(label_update_queue, &msg, 0) == pdTRUE) {
-        if (msg.label_index >= 0 && msg.label_index < item_n) {
+        if (msg.label_index >= 0 && msg.label_index < TOTAL_LABELS) {
             lv_label_set_text(flat_labels[msg.label_index], msg.display_text);
         }
     }
@@ -102,7 +103,7 @@ void _startup_logo(lv_display_t *disp) {
 }
 
 void update_ui(int index, const char *text) {
-    if (index < 0 || index >= item_n) return;
+    if (index < 0 || index >= TOTAL_LABELS) return;
     lv_label_set_text(flat_labels[index], text);
     lv_obj_invalidate(flat_labels[index]);
 }

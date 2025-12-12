@@ -15,6 +15,9 @@ idf_component_register(
         # I2C 0 - MP4245 Controller
         "i2c_0/MP4245/MP4245.c"
 
+        # I2C 0 - INA234 Controller
+        "i2c_0/INA234/INA234_BUS.C"
+
         # I2C 1 - LVGL UI
         "i2c_1/lvgl_ui/lvgl_init.c"
         "i2c_1/lvgl_ui/display.c"

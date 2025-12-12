@@ -22,10 +22,9 @@
 #define LVGL_TASK_MAX_DELAY_MS 500
 #define LVGL_TASK_MIN_DELAY_MS 1000 / CONFIG_FREERTOS_HZ
 
-#define PAGE_COUNT 2
+#define PAGE_COUNT 3
 #define LABELS_PER_PAGE 5
 #define TOTAL_LABELS (PAGE_COUNT * LABELS_PER_PAGE)
-#define item_n 10
 
 extern lv_obj_t *flat_labels[TOTAL_LABELS];
 extern lv_obj_t *pages[PAGE_COUNT];

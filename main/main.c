@@ -5,6 +5,7 @@
 
 #include "i2c_0/TMP117/TMP117.h"
 #include "i2c_0/MP4245/MP4245.h"
+#include "i2c_0/INA234/INA234_BUS.h"
 
 #include "i2c_1/lvgl_ui/lvgl_init.h"
 
@@ -55,7 +56,10 @@ void app_main(void)
     xTaskCreate(fan_temp_task, "fam_temp_task", 4096, NULL, 5, NULL);
 
     ESP_LOGI(TAG, "Initialize MP4245");
-    xTaskCreate(mp4245_thread, "MP4245_THREAD", 8*1024, 0, 2, NULL);
+    xTaskCreate(mp4245_thread, "MP4245_THREAD", 4*1024, 0, 2, NULL);
+
+    ESP_LOGI(TAG, "Initialize INA234");
+    xTaskCreate(ina234_bus_thread, "INA234_BUS_THREAD", 4*1024, 0, 2, NULL);
     
     lv_init();
     lv_display_t *display = lv_display_create(LCD_H_RES, LCD_V_RES);
