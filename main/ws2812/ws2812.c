@@ -8,7 +8,7 @@
 
 #include "ws2812.h"
 
-#define WS2812_PIN 3
+#define WS2812_PIN 2
 #define LED_NUM    8
 #define DELAY_MS   50
 

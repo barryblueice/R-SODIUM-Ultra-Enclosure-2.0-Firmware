@@ -32,7 +32,7 @@ esp_err_t i2c_master_init(void) {
         .i2c_port = 0,
         .clk_source = I2C_CLK_SRC_DEFAULT,
         .glitch_ignore_cnt = 7,
-        .flags.enable_internal_pullup = false,
+        .flags.enable_internal_pullup = true,
     };
     ESP_ERROR_CHECK(i2c_new_master_bus(&bus_cfg, &I2C_BUS0));
 
@@ -63,7 +63,7 @@ esp_err_t i2c_master_init(void) {
         .i2c_port = 1,
         .sda_io_num = I2C_BUS1_SDA,
         .scl_io_num = I2C_BUS1_SCL,
-        .flags.enable_internal_pullup = false,
+        .flags.enable_internal_pullup = true,
     };
     ESP_ERROR_CHECK(i2c_new_master_bus(&bus_config, &I2C_BUS1));
 

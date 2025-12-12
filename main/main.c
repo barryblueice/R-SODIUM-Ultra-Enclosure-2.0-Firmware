@@ -14,6 +14,8 @@
 
 #include "fan_ctl/pwm_ctl.h"
 
+#include "driver/gpio.h"
+
 static const char *TAG = "Controller Main Thread";
 
 void app_main(void)
@@ -23,6 +25,23 @@ void app_main(void)
 
     ESP_LOGI(TAG, "Initialize WS2812 (Process LED)");
     xTaskCreate(ws2812_thread, "WS2812_THREAD", 4*1024, 0, 2, NULL);
+
+    gpio_config_t io_conf = {
+        .intr_type = GPIO_INTR_DISABLE,
+        .mode = GPIO_MODE_OUTPUT,
+        .pin_bit_mask = (1ULL << GPIO_NUM_3) | (1ULL << GPIO_NUM_7) | (1ULL << GPIO_NUM_10) | (1ULL << GPIO_NUM_9) | (1ULL << GPIO_NUM_11) | (1ULL << GPIO_NUM_14),
+        .pull_up_en = GPIO_PULLUP_DISABLE,
+        .pull_down_en = GPIO_PULLDOWN_DISABLE,
+    };
+    gpio_config(&io_conf);
+
+    gpio_set_level(GPIO_NUM_3, 0x00);
+    gpio_set_level(GPIO_NUM_7, 0x01);
+    gpio_set_level(GPIO_NUM_10, 0x00);
+
+    gpio_set_level(GPIO_NUM_9, 0x01);
+    gpio_set_level(GPIO_NUM_11, 0x01);
+    gpio_set_level(GPIO_NUM_14, 0x01);
 
     ESP_LOGI(TAG, "Initialize TMP117 (Temperature Sensor)");
     xTaskCreate(tmp117_thread, "TMP117_THREAD", 4*1024, 0, 2, NULL);
